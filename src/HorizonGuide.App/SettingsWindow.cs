@@ -22,6 +22,9 @@ public sealed class SettingsWindow : Window
     private readonly TextBlock _bottomValue = ValueText();
     private readonly TextBlock _labelLiftValue = ValueText();
 
+    // 用户点了"退出"就置真：让 OnClosing 放行，别再拦成隐藏。
+    private bool _exiting;
+
     public SettingsWindow(PlaybackSettings settings)
     {
         _settings = settings;
@@ -29,9 +32,9 @@ public sealed class SettingsWindow : Window
 
         Title = "Horizon Guide";
         Width = 360;
-        Height = 390;
+        Height = 448;
         MinWidth = 340;
-        MinHeight = 360;
+        MinHeight = 420;
         ResizeMode = ResizeMode.CanMinimize;
         ShowInTaskbar = true;
         WindowStartupLocation = WindowStartupLocation.Manual;
@@ -49,6 +52,7 @@ public sealed class SettingsWindow : Window
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });   // 退出按钮
         root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(92) });
         root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         root.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(58) });
@@ -111,12 +115,31 @@ public sealed class SettingsWindow : Window
         Grid.SetColumnSpan(note, 3);
         root.Children.Add(note);
 
+        var exit = new Button
+        {
+            Content = "退出程序",
+            Padding = new Thickness(16, 4, 16, 4),
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(0, 16, 0, 0),
+        };
+        exit.Click += (_, _) =>
+        {
+            _exiting = true;
+            Application.Current.Shutdown();
+        };
+        Grid.SetRow(exit, 7);
+        Grid.SetColumnSpan(exit, 3);
+        root.Children.Add(exit);
+
         Content = root;
     }
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        e.Cancel = true;
+        if (_exiting)
+            return;          // 真退出：放行，让 Application.Shutdown() 关掉窗口
+
+        e.Cancel = true;     // 点 X：不关，只藏起来（F10 再切回来）
         Hide();
     }
 
