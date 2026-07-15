@@ -1,0 +1,47 @@
+# ---------------------------------------------------------------------------
+# Horizon Guide —— 公开仓库 = app 源码。以下东西一律不进 git。
+# 改这个文件前想清楚：一旦提交并 push，密钥/版权素材留在历史里就抹不掉了。
+# ---------------------------------------------------------------------------
+
+# ---- .NET 构建产物 ----
+**/bin/
+**/obj/
+dist/
+*.user
+.vs/
+
+# ---- 内容生成 pipeline（不公开）----
+# 含硬编码的 API key、内部 endpoint。绝不能进仓库。
+tools/content/
+tools/tts/
+tools/vendor/
+
+# ---- 生成/大体积数据（走 Releases，不进仓库）----
+content/audio/
+content/facts/
+content/scripts/
+content/content-index.json
+content/_old_*/
+
+# ---- 游戏版权素材（DJ 录音，公开会侵权）----
+assets/
+
+# ---- 运行/流程日志 ----
+data/*.log
+data/gather*
+data/*-logs/
+data/run-logs/
+data/gather-logs/
+
+# ---- 内部工作文档（不对外）----
+REMINDERS.md
+CURRENT_STATUS.md
+v1_system_design.md
+docs/DEVELOPING.md
+README.internal.md
+
+# ---- 编辑器 / 系统 ----
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
