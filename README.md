@@ -137,6 +137,7 @@ docs/                     design notes + release readme
 ### 直接用（不需要编译）
 
 从最新 [Release](../../releases) 下两个压缩包：
+或者[百度云盘](https://pan.baidu.com/s/1fGf5Qq27RgajjRdoxbCD8A?pwd=m3ic)
 
 | 压缩包 | 内容 |
 |---|---|
